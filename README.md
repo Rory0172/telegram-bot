@@ -1,24 +1,22 @@
-# README
+## README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
+## SETUP
+For the first you need to install gems required to start a bot:
 
-* Ruby version
+```sh
+bundle install
+```
 
-* System dependencies
+Then you need to create `secrets.yml` where your bot unique token will be stored.
 
-* Configuration
+After this you need to create and migrate your database:
 
-* Database creation
+```sh
+rake db:create db:migrate
+```
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### Running the bot
+```sh
+bin/bot
+```
