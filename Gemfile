@@ -9,6 +9,8 @@ gem 'puma', '~> 3.11'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'jbuilder', '~> 2.5'
+gem 'telegram-bot-ruby'
+gem 'rake'
 
 
 # Reduces boot times through caching; required in config/boot.rb

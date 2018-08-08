@@ -1,10 +1,8 @@
 class CreateUsers < ActiveRecord::Migration[5.2]
   def change
-    create_table :users do |t|
+    create_table :users, force: true do |t|
       t.string :telegram_id
-      t.string :first_name
-      t.string :last_name
-      t.jsonb :bot_command_data, default: {}
+      t.string :username
       t.timestamps null: false
     end
   end
