@@ -12,6 +12,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'telegram-bot-ruby'
 gem 'rake'
 gem 'turbolinks'
+gem 'colorize'
 
 
 # Reduces boot times through caching; required in config/boot.rb
