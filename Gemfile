@@ -11,6 +11,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'jbuilder', '~> 2.5'
 gem 'telegram-bot-ruby'
 gem 'rake'
+gem 'turbolinks'
 
 
 # Reduces boot times through caching; required in config/boot.rb
