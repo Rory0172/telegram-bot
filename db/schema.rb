@@ -18,10 +18,10 @@ ActiveRecord::Schema.define(version: 2018_08_09_172217) do
   create_table "coin_signals", force: :cascade do |t|
     t.bigint "coin_id", null: false
     t.string "exchange"
-    t.decimal "entry_price", null: false
-    t.decimal "sell_target_1", null: false
-    t.decimal "sell_target_2"
-    t.decimal "stoploss", null: false
+    t.float "entry_price", null: false
+    t.float "sell_target_1", null: false
+    t.float "sell_target_2"
+    t.float "stoploss", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["coin_id"], name: "index_coin_signals_on_coin_id"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 2018_08_09_172217) do
 
   create_table "coins", force: :cascade do |t|
     t.string "name", null: false
-    t.decimal "current_price"
+    t.float "current_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

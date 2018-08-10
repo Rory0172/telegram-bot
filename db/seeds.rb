@@ -5,13 +5,3 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-
-Coin.create!(name: "BTC", current_price: 110)
-CoinSignal.create!(
-  coin_id: 1,
-  exchange: "Binance",
-  entry_price: 100,
-  sell_target_1: 120,
-  sell_target_2: 125,
-  stoploss: 95
-  )

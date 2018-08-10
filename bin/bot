@@ -1,15 +1,20 @@
 #!/usr/bin/env ruby
-
 require 'telegram/bot'
 
 require './lib/message_responder'
 require './lib/app_configurator'
+
+
+      # def ticker!(symbol: nil, type: nil)
 
 config = AppConfigurator.new
 
 token = config.get_token
 logger = config.get_logger
 
+ping = Binance::Api.ticker!(symbol: "BTCUSDT", type: "price")
+
+logger.debug ping
 logger.debug 'Starting telegram bot'
 
 Telegram::Bot::Client.run(token) do |bot|

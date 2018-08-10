@@ -13,6 +13,8 @@ gem 'telegram-bot-ruby'
 gem 'rake'
 gem 'turbolinks'
 gem 'colorize'
+gem 'binance-ruby'
+gem 'activeadmin'
 
 
 # Reduces boot times through caching; required in config/boot.rb
@@ -30,6 +32,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'db-extras', source: 'https://Bs-7FbeK9eYYi5EVPddP@gem.fury.io/mathijsb/'
 end
 
 
