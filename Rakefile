@@ -21,7 +21,7 @@ task binance: :environment do
   coins.push(bccbtc)
   eosbtc = Binance::Api.ticker!(symbol: "EOSBTC", type: "price")
   coins.push(eosbtc)
-  btc = btc[:price]
+  btc = btc[:price].to_f
 
   logger.debug coins
   coins.each{ |coin|
