@@ -6,3 +6,4 @@ default: &default
 development:
   <<: *default
   database: signalbot_development
+

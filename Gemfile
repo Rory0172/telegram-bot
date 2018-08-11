@@ -15,6 +15,8 @@ gem 'turbolinks'
 gem 'colorize'
 gem 'binance-ruby'
 gem 'activeadmin'
+gem 'devise'
+gem 'cancan'
 
 
 # Reduces boot times through caching; required in config/boot.rb

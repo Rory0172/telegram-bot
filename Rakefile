@@ -25,12 +25,12 @@ task binance: :environment do
 
   logger.debug coins
   coins.each{ |coin|
-    price = coin[:price] * btc
+    price = (coin[:price].to_f * btc)
     name = coin[:symbol][0..2]
-    logger.debug name
-    coin = Coin.find_or_create_by!(name: name)
-    coin[:current_price] = price
-    coin.save
+    logger.debug coin[:price]
+    db_coin = Coin.find_or_create_by!(name: name)
+    db_coin[:current_price] = price
+    db_coin.save
    }
 
   coin = Coin.find_or_create_by name: "BTC"

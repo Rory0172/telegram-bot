@@ -63,6 +63,7 @@ GEM
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
+    bcrypt (3.1.12)
     binance-ruby (0.2)
       activesupport (~> 5.1)
       awrence (~> 1.0)
@@ -72,6 +73,7 @@ GEM
       msgpack (~> 1.0)
     builder (3.2.3)
     byebug (10.0.2)
+    cancan (1.6.10)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     coffee-rails (4.2.2)
@@ -87,6 +89,12 @@ GEM
     db-extras (1.0.0)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
+    devise (4.4.3)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 4.1.0, < 6.0)
+      responders
+      warden (~> 1.2.3)
     equalizer (0.0.11)
     erubi (1.7.1)
     execjs (2.7.0)
@@ -154,6 +162,7 @@ GEM
     nio4r (2.3.1)
     nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
+    orm_adapter (0.5.0)
     pg (0.21.0)
     polyamorous (1.3.3)
       activerecord (>= 3.0)
@@ -241,6 +250,8 @@ GEM
       coercible (~> 1.0)
       descendants_tracker (~> 0.0, >= 0.0.3)
       equalizer (~> 0.0, >= 0.0.9)
+    warden (1.2.7)
+      rack (>= 1.0)
     web-console (3.6.2)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -258,8 +269,10 @@ DEPENDENCIES
   binance-ruby
   bootsnap (>= 1.1.0)
   byebug
+  cancan
   colorize
   db-extras!
+  devise
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
   pg (~> 0.18)

@@ -12,9 +12,6 @@ config = AppConfigurator.new
 token = config.get_token
 logger = config.get_logger
 
-ping = Binance::Api.ticker!(symbol: "BTCUSDT", type: "price")
-
-logger.debug ping
 logger.debug 'Starting telegram bot'
 
 Telegram::Bot::Client.run(token) do |bot|

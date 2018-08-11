@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  belongs_to: MyString
+  admin_user,: MyString
+  has_many: MyString
+  coin_signals: MyString
+
+two:
+  belongs_to: MyString
+  admin_user,: MyString
+  has_many: MyString
+  coin_signals: MyString
