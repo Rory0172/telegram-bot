@@ -34,7 +34,6 @@ ActiveRecord::Schema.define(version: 2018_09_07_211445) do
 
   create_table "coin_signals", force: :cascade do |t|
     t.bigint "coin_id", null: false
-    t.bigint "group_id", null: false
     t.string "exchange", default: "Binance"
     t.float "entry_price", null: false
     t.float "sell_target_1", null: false
@@ -43,7 +42,6 @@ ActiveRecord::Schema.define(version: 2018_09_07_211445) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["coin_id"], name: "index_coin_signals_on_coin_id"
-    t.index ["group_id"], name: "index_coin_signals_on_group_id"
   end
 
   create_table "coins", force: :cascade do |t|
@@ -53,26 +51,12 @@ ActiveRecord::Schema.define(version: 2018_09_07_211445) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "groups", force: :cascade do |t|
-    t.bigint "admin_user_id", null: false
-    t.string "name", null: false
-    t.integer "chat_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["admin_user_id"], name: "index_groups_on_admin_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
-    t.bigint "group_id", null: false
     t.string "telegram_id", null: false
     t.string "username", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["group_id"], name: "index_users_on_group_id"
   end
 
   add_foreign_key "coin_signals", "coins"
-  add_foreign_key "coin_signals", "groups"
-  add_foreign_key "groups", "admin_users"
-  add_foreign_key "users", "groups"
 end
