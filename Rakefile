@@ -11,20 +11,17 @@ task binance: :environment do
   config = AppConfigurator.new
   logger = config.get_logger
 
-  coins = []
+  coins = ["ETH", "XRP", "BCC", "EOS"]
+  data = []
+
+  coins.each do |coin|
+    data.push(Binance::Api.ticker!(symbol: "#{coin}BTC", type: "price"))
+  end
+
   btc = Binance::Api.ticker!(symbol: "BTCUSDT", type: "price")
-  ethbtc = Binance::Api.ticker!(symbol: "ETHBTC", type: "price")
-  coins.push(ethbtc)
-  xrpbtc = Binance::Api.ticker!(symbol: "XRPBTC", type: "price")
-  coins.push(xrpbtc)
-  bccbtc = Binance::Api.ticker!(symbol: "BCCBTC", type: "price")
-  coins.push(bccbtc)
-  eosbtc = Binance::Api.ticker!(symbol: "EOSBTC", type: "price")
-  coins.push(eosbtc)
   btc = btc[:price].to_f
 
-  logger.debug coins
-  coins.each{ |coin|
+  data.each{ |coin|
     price = (coin[:price].to_f * btc)
     name = coin[:symbol][0..2]
     logger.debug coin[:price]
