@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:Rory0172/binance-ruby.git
+  remote: https://github.com/Rory0172/binance-ruby.git
   revision: 720ce64260ce018a2ff642f55459db8c7406b486
   specs:
     binance-ruby (0.2)
