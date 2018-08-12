@@ -13,7 +13,7 @@ gem 'telegram-bot-ruby'
 gem 'rake'
 gem 'turbolinks'
 gem 'colorize'
-gem 'binance-ruby',:git => "git@github.com:Rory0172/binance-ruby.git"
+gem 'binance-ruby',:git => "https://github.com/Rory0172/binance-ruby.git"
 gem 'activeadmin'
 gem 'devise'
 gem 'cancan'
