@@ -14,6 +14,8 @@ Devise.setup do |config|
   # Configure the parent class to the devise controllers.
   # config.parent_controller = 'DeviseController'
 
+  config.secret_key = 'b4cef477203c5700154c653f57fc80ced5f121b8cd09680078e1f59b9c92a5589991ba7fba999b573dd457802a2ccd76a682b4b9962b676c5d0d9b1d377582b1'
+
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
