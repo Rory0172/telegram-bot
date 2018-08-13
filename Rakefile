@@ -5,7 +5,13 @@ require_relative 'config/application'
 
 Rails.application.load_tasks
 
-require './lib/app_configurator'
+task bot: :environment do
+  require 'telegram/bot'
+
+  token = YAML::load(IO.read('config/secrets.yml'))['telegram_bot_token']
+  bot   = CoinBot.new(token)
+  bot.start
+end
 
 task binance: :environment do
   config = AppConfigurator.new
