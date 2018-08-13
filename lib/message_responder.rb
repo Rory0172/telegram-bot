@@ -10,7 +10,7 @@ class MessageResponder
   def initialize(options)
     @bot = options[:bot]
     @message = options[:message]
-    @user = User.find_or_create_by(telegram_id: message.from.id, username: message.from.username)
+    @user = User.find_or_create_by(telegram_id: message.from.id, username: message.from.username, chat_id:message.chat.id)
     @coin = Coin.find_by(name: message.text[1..3])
     @signal = @coin.coin_signals.last
   end

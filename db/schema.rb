@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2018_09_07_211445) do
   create_table "users", force: :cascade do |t|
     t.string "telegram_id", null: false
     t.string "username", null: false
+    t.integer "chat_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

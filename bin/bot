@@ -16,8 +16,8 @@ logger.debug 'Starting telegram bot'
 
 Telegram::Bot::Client.run(token) do |bot|
   bot.listen do |message|
+    # bot.api.get_chat_member(chat_id: )
     options = {bot: bot, message: message}
-
     logger.debug "@#{message.from.username}: #{message.text}" 
     MessageResponder.new(options).respond
   end
