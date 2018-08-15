@@ -10,7 +10,7 @@ task bot: :environment do
 
   token = YAML::load(IO.read('config/secrets.yml'))['telegram_bot_token']
   bot   = CoinBot.new(token)
-  bot.start
+  bot.start_listening
 end
 
 task binance: :environment do
