@@ -8,9 +8,16 @@ Rails.application.load_tasks
 task bot: :environment do
   require 'telegram/bot'
 
-  token = YAML::load(IO.read('config/secrets.yml'))['telegram_bot_token']
-  bot   = CoinBot.new(token)
+  bot   = CoinBot.new(ENV["BOTTOKEN"])
   bot.start_listening
+end
+
+task send: :environment do
+  require 'telegram/bot'
+  token = '637408676:AAFURPHhXsk3d5NS_e67pa8ekCTFxETILQY'
+  Telegram::Bot::Client.run(token) do |bot|
+    bot.api.send_message(chat_id: "546865437", text: "MNever")
+  end
 end
 
 task binance: :environment do
