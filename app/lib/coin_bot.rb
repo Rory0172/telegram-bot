@@ -8,7 +8,7 @@ class CoinBot < Bot
       if @signal.blank?
         reply ({chat_id: msg.chat.id, text:"No signals given yet!"})
       else
-        reply({chat_id: msg.chat.id, text:"Target #{@coin.name} (#{@signal.exchange})\nCurrent price: #{@coin.current_price}\nResult: #{@signal.result}\nEntry: #{@signal.entry_price}\nTarget 1: #{@signal.sell_target_1}\nTarget 2:#{@signal.sell_target_2}\nStoploss: #{@signal.stoploss}"})
+        reply({chat_id: msg.chat.id, text:"*Target #{@coin.name} (#{@signal.exchange})*\nTimestamp:{@signal.created_at}\nCurrent price: #{@coin.current_price}\nResult: #{@signal.result}\nEntry: #{@signal.entry_price}\nTarget 1: #{@signal.sell_target_1}\nTarget 2:#{@signal.sell_target_2}\nStoploss: #{@signal.stoploss}", parse_mode:"markdown"})
       end
     end
   end

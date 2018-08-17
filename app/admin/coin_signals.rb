@@ -7,7 +7,7 @@ ActiveAdmin.register CoinSignal do
 
   form do |f|
     f.inputs do
-      f.input :coin
+      f.input :coin, :as => :string , label: "Abbreviation coin"
       f.input :exchange
       f.input :entry_price
       f.input :sell_target_1
