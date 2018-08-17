@@ -14,8 +14,7 @@ end
 
 task send: :environment do
   require 'telegram/bot'
-  token = '637408676:AAFURPHhXsk3d5NS_e67pa8ekCTFxETILQY'
-  Telegram::Bot::Client.run(token) do |bot|
+  Telegram::Bot::Client.run(ENV["BOTTOKEN"]) do |bot|
     bot.api.send_message(chat_id: "546865437", text: "MNever")
   end
 end

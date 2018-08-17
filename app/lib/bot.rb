@@ -18,9 +18,6 @@ class Bot
     @user
   end
 
-  def send_to_all(msg)
-  end
-
   def message(msg)
   end
 

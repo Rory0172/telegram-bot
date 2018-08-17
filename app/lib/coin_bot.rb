@@ -13,17 +13,12 @@ class CoinBot < Bot
     end
   end
 
-  def send_to_all(signal)
-    @coin = Coin.find(signal.coin)
-    @signal = @coin.coin_signals.last
-    User.all.each do |user|
-      reply({chat_id: user.chat_id, text:"Target #{@coin.name} (#{@signal.exchange})\nCurrent price: #{@coin.current_price}\nResult: #{@signal.result}\nEntry: #{@signal.entry_price}\nTarget 1: #{@signal.sell_target_1}\nTarget 2:#{@signal.sell_target_2}\nStoploss: #{@signal.stoploss}"})
-    end
-  end
-
   def announce(signal)
+    @coin = Coin.find(signal.coin.id)
     Telegram::Bot::Client.run(@token) do |bot|
-      bot.api.send_message(chat_id: "546865437", text: signal.coin.name)
+      User.all.each do |user|
+        bot.api.send_message(chat_id: user.chat_id, text:"Target #{@coin.name} (#{signal.exchange})\nCurrent price: #{@coin.current_price}\nResult: #{signal.result}\nEntry: #{signal.entry_price}\nTarget 1: #{signal.sell_target_1}\nTarget 2:#{signal.sell_target_2}\nStoploss: #{signal.stoploss}")
+      end
     end
   end
 
