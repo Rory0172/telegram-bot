@@ -20,8 +20,6 @@ task send: :environment do
 end
 
 task binance: :environment do
-  config = AppConfigurator.new
-  logger = config.get_logger
 
   coins = ["ETH", "XRP", "BCC", "EOS"]
   data = []
@@ -33,14 +31,14 @@ task binance: :environment do
   btc = Binance::Api.ticker!(symbol: "BTCUSDT", type: "price")
   btc = btc[:price].to_f
 
-  data.each{ |coin|
+  data.each do |coin|
     price = (coin[:price].to_f * btc)
     name = coin[:symbol][0..2]
-    logger.debug coin[:price]
+    Rails.logger.info price
     db_coin = Coin.find_or_create_by!(name: name)
     db_coin[:current_price] = price
     db_coin.save
-   }
+  end
 
   coin = Coin.find_or_create_by name: "BTC"
   coin[:current_price] = btc
