@@ -19,6 +19,20 @@ task send: :environment do
   end
 end
 
+
+task coins: :environment do
+  data = Binance::Api.ticker!(type: "price")
+  data.each do |coin|
+    price = 0
+    name = coin[:symbol][0..2]
+    Rails.logger.info name
+    db_coin = Coin.find_or_create_by!(name: name)
+    db_coin[:current_price] = price
+    db_coin.save
+  end
+
+end
+
 task binance: :environment do
 
   coins = ["ETH", "XRP", "BCC", "EOS"]
