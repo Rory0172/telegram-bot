@@ -1,14 +1,41 @@
 class CoinBot < Bot
   def message(msg)
-    @coin = Coin.find_by(name: msg.text)
-    if @coin.blank?
-      reply ({chat_id: msg.chat.id, text:"Coin is not added yet."})
-    else
-      @signal = @coin.coin_signals.last
-      if @signal.blank?
-        reply ({chat_id: msg.chat.id, text:"No signals given yet!"})
+    if msg.text.match /TARGETS/i
+      Coin.all.each do |coin|
+        @signal = coin.coin_signals.last
+        if !@signal.blank?
+          reply({chat_id: msg.chat.id, text:"*Target #{coin.name} (#{@signal.exchange})*\n#{@signal.time_ago}\nCurrent price: #{coin.current_price}\nResult: #{@signal.result}\nEntry: #{@signal.entry_price}\nTarget 1: #{@signal.sell_target_1}\nTarget 2: #{@signal.sell_target_2}\nStoploss: #{@signal.stoploss}", parse_mode:"markdown"})
+        end
+      end
+    end
+
+    if msg.text.match /BTC/i
+      @coin = Coin.find_by(name: msg.text)
+      btc = Binance::Api.ticker!(symbol: "BTCUSDT", type: "price")
+      @coin.current_price = btc[:price]
+      @coin.save
+    end
+
+    if msg.text.match /\b[A-Z]{3}\b/i
+      @coin = Coin.find_by(name: msg.text)
+      if @coin.blank?
+        reply ({chat_id: msg.chat.id, text:"There are no signals given or this coin is not added yet."})
       else
-        reply({chat_id: msg.chat.id, text:"*Target #{@coin.name} (#{@signal.exchange})*\n#{@signal.time_ago}\nCurrent price: #{@coin.current_price}\nResult: #{@signal.result}\nEntry: #{@signal.entry_price}\nTarget 1: #{@signal.sell_target_1}\nTarget 2: #{@signal.sell_target_2}\nStoploss: #{@signal.stoploss}", parse_mode:"markdown"})
+        btc = Binance::Api.ticker!(symbol: "BTCUSDT", type: "price")
+        if msg.text == "BTC"
+          @coin.current_price = btc[:price]
+        else
+          current_states_coin = Binance::Api.ticker!(symbol: "#{msg.text}BTC", type: "price")
+          price_btc = btc[:price].to_f
+          @coin.current_price = current_states_coin[:price].to_f * price_btc
+          @coin.save
+        end
+        @signal = @coin.coin_signals.last
+        if @signal.blank?
+          reply ({chat_id: msg.chat.id, text:"No signals given yet!"})
+        else
+          reply({chat_id: msg.chat.id, text:"*Target #{@coin.name} (#{@signal.exchange})*\n#{@signal.time_ago}\nCurrent price: #{@coin.current_price}\nResult: #{@signal.result}\nEntry: #{@signal.entry_price}\nTarget 1: #{@signal.sell_target_1}\nTarget 2: #{@signal.sell_target_2}\nStoploss: #{@signal.stoploss}", parse_mode:"markdown"})
+        end
       end
     end
   end
