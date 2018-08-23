@@ -15,7 +15,7 @@ end
 task send: :environment do
   require 'telegram/bot'
   Telegram::Bot::Client.run(ENV["BOTTOKEN"]) do |bot|
-    bot.api.send_message(chat_id: "546865437", text: "MNever")
+    bot.api.send_message(chat_id: "546865437", text: "MNever \u{1F601}")
   end
 end
 
@@ -30,31 +30,10 @@ task coins: :environment do
     db_coin[:current_price] = price
     db_coin.save
   end
-
 end
 
 task binance: :environment do
-
-  coins = ["ETH", "XRP", "BCC", "EOS"]
-  data = []
-
-  coins.each do |coin|
-    data.push(Binance::Api.ticker!(symbol: "#{coin}BTC", type: "price"))
-  end
-
-  btc = Binance::Api.ticker!(symbol: "BTCUSDT", type: "price")
-  btc = btc[:price].to_f
-
-  data.each do |coin|
-    price = (coin[:price].to_f * btc)
-    name = coin[:symbol][0..2]
-    Rails.logger.info price
-    db_coin = Coin.find_or_create_by!(name: name)
-    db_coin[:current_price] = price
-    db_coin.save
-  end
-
-  coin = Coin.find_or_create_by name: "BTC"
-  coin[:current_price] = btc
-  coin.save
+  data = Binance::Api.candlesticks!(symbol: "BTCUSDT", interval: "15m", limit: 1)
+  Rails.logger = Logger.new(STDOUT)
+  Rails.logger.info data
 end
