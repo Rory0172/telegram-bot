@@ -39,13 +39,17 @@ ActiveRecord::Schema.define(version: 2018_09_07_211445) do
     t.float "sell_target_1", null: false
     t.float "sell_target_2"
     t.float "stoploss", null: false
+    t.boolean "target_1_completed", default: false
+    t.boolean "target_2_completed", default: false
+    t.boolean "stoploss_completed", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["coin_id"], name: "index_coin_signals_on_coin_id"
   end
 
   create_table "coins", force: :cascade do |t|
-    t.string "name", null: false
+    t.string "name"
+    t.string "symbol"
     t.float "current_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

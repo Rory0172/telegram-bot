@@ -23,17 +23,52 @@ end
 task coins: :environment do
   data = Binance::Api.ticker!(type: "price")
   data.each do |coin|
+    Rails.logger = Logger.new(STDOUT)
+    Rails.logger.info coin
     price = 0
     name = coin[:symbol][0..2]
-    Rails.logger.info name
     db_coin = Coin.find_or_create_by!(name: name)
+    db_coin[:symbol] = coin[:symbol]
     db_coin[:current_price] = price
     db_coin.save
   end
 end
 
 task binance: :environment do
-  data = Binance::Api.candlesticks!(symbol: "BTCUSDT", interval: "15m", limit: 1)
-  Rails.logger = Logger.new(STDOUT)
-  Rails.logger.info data
+  require 'telegram/bot'
+  Telegram::Bot::Client.run(ENV["BOTTOKEN"]) do |bot|
+    CoinSignal.all.each do |signal|
+      timeDifference = DateTime.now.strftime('%Q').to_i - signal.created_at.to_datetime.strftime('%Q').to_i
+      time = timeDifference - 600000
+      data = Binance::Api.candlesticks!(symbol:signal.coin.symbol, startTime: signal.created_at.to_datetime.strftime('%Q').to_i + time, endTime:DateTime.now.strftime('%Q'), interval: "5m")
+      Rails.logger = Logger.new(STDOUT)
+      Rails.logger.info data
+      data.each do |coin|
+        if !signal.target_1_completed and signal.sell_target_1 < coin[2].to_f
+          Rails.logger.info "signal 1 gehaald"
+          User.all.each do |user|
+            bot.api.send_message(chat_id: user.chat_id, text: "\u{1F3AF} *Update #{signal.coin.name}*\nTarget of *#{signal.sell_target_1}* is achieved! That's allready #{(signal.sell_target_1 / signal.entry_price * 100 - 100).round}% procent profit in #{signal.time_ago}! Next target up is #{signal.sell_target_2}!", parse_mode:"markdown")
+          end
+          signal.target_1_completed = true
+          signal.save
+        end
+        if !signal.target_2_completed and signal.sell_target_2 < coin[2].to_f
+          Rails.logger.info "signal 2 gehaald"
+          User.all.each do |user|
+            bot.api.send_message(chat_id: user.chat_id, text: "\u{1F3AF} *Update #{signal.coin.name}*\nTarget of *#{signal.sell_target_2}* is achieved! That's another #{(signal.sell_target_1 / signal.entry_price * 100 - 100).round}% procent profit in #{signal.time_ago}!", parse_mode:"markdown")
+          end
+          signal.target_2_completed = true
+          signal.save
+        end
+        if !signal.stoploss_completed and signal.stoploss > coin[3].to_f
+          Rails.logger.info "stoploss afgegaan"
+          User.all.each do |user|
+            bot.api.send_message(chat_id: user.chat_id, text: "\u{26A0} *Update #{signal.coin.name}*\nStoploss of *#{signal.stoploss}* is hit!", parse_mode:"markdown")
+          end
+          signal.stoploss_completed = true
+          signal.save
+        end
+      end
+    end
+  end
 end

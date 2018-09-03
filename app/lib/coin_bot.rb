@@ -9,13 +9,6 @@ class CoinBot < Bot
       end
     end
 
-    if msg.text.match /BTC/i
-      @coin = Coin.find_by(name: msg.text)
-      btc = Binance::Api.ticker!(symbol: "BTCUSDT", type: "price")
-      @coin.current_price = btc[:price]
-      @coin.save
-    end
-
     if msg.text.match /\b[A-Z]{3}\b/i
       @coin = Coin.find_by(name: msg.text)
       if @coin.blank?
@@ -34,7 +27,7 @@ class CoinBot < Bot
         if @signal.blank?
           reply ({chat_id: msg.chat.id, text:"No signals given yet!"})
         else
-          reply({chat_id: msg.chat.id, text:"*Target #{@coin.name} (#{@signal.exchange})*\n#{@signal.time_ago}\nCurrent price: #{@coin.current_price}\nResult: #{@signal.result} #{@signal.result.to_f < 0 ? "\u{2B07}" : "\u{2B06}"}\nEntry: #{@signal.entry_price}\nTarget 1: #{@signal.sell_target_1}\nTarget 2: #{@signal.sell_target_2}\nStoploss: #{@signal.stoploss}", parse_mode:"markdown"})
+          reply({chat_id: msg.chat.id, text:"*Target #{@coin.name} (#{@signal.exchange})*\n#{@signal.time_ago} ago\nCurrent price: #{@coin.current_price}\nResult: #{@signal.result} #{@signal.result.to_f < 0 ? "\u{2B07}" : "\u{2B06}"}\nEntry: #{@signal.entry_price}\nTarget 1: #{@signal.sell_target_1}\nTarget 2: #{@signal.sell_target_2}\nStoploss: #{@signal.stoploss}", parse_mode:"markdown"})
         end
       end
     end

@@ -14,13 +14,13 @@ class CoinSignal < ApplicationRecord
     diff_seconds = Time.now - created_at
     case diff_seconds
       when 0 .. 59
-        "#{diff_seconds} seconds ago"
+        "#{diff_seconds} seconds"
       when 60 .. (3600-1)
-        "#{(diff_seconds/60).round} minutes ago"
+        "#{(diff_seconds/60).round} minutes"
       when 3600 .. (3600*24-1)
-        "#{(diff_seconds/3600).round} hours ago"
+        "#{(diff_seconds/3600).round} hours"
       when (3600*24) .. (3600*24*30) 
-        "#{(diff_seconds/(3600*24)).round} days ago"
+        "#{(diff_seconds/(3600*24)).round} days"
       else
         start_time.strftime("%m/%d/%Y")
     end
