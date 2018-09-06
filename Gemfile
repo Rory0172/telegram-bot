@@ -17,6 +17,7 @@ gem 'binance-ruby',:git => "https://github.com/Rory0172/binance-ruby.git"
 gem 'activeadmin'
 gem 'devise'
 gem 'cancan'
+gem 'rufus-scheduler'
 
 
 # Reduces boot times through caching; required in config/boot.rb
