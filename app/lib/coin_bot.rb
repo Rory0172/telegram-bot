@@ -25,12 +25,12 @@ class CoinBot < Bot
       end
     end
 
-    if msg.text.match /\/\b[A-Za-z]{3}\b/i
-      @coin = Coin.find_by(name: msg.text[1..3])
+    if msg.text.match /\/\p{L}{3}/i
+      @coin = Coin.find_by(name: msg.text[1..3].upcase)
       if @coin.blank?
         reply ({chat_id: msg.chat.id, text:"Can't find this specific coin. Make sure that you use the correct abbreviation."})
       else
-        self.set_price(msg.text[1..3])
+        self.set_price(msg.text[1..3].upcase)
         @signal = @coin.coin_signals.last
         if @signal.blank?
           reply ({chat_id: msg.chat.id, text:"There is no signal given for #{msg.text[1..3]}. Please use /targets to get an overview for active targets."})
