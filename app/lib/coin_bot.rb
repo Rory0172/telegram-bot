@@ -4,9 +4,9 @@ class CoinBot < Bot
       if CoinSignal.all.blank?
         reply({chat_id: msg.chat.id, text:"There are no signals given yet."})
       else
-        reply({chat_id: msg.chat.id, text:"Click on a signal to get detailed information or use /coinname."})
+        reply({chat_id: msg.chat.id, text:"Click on a signal to get detailed information or use /coinname.", parse_mode:"markdown"})
         CoinSignal.all.each do |signal|
-          reply({chat_id: msg.chat.id, text:"*/#{signal.coin.name}* (#{signal.exchange}): #{signal.result} #{signal.result.to_f < 0 ? "\u{2B07}" : "\u{2B06}"}", parse_mode:"markdown"})
+          reply({chat_id: msg.chat.id, text:"/#{signal.coin.name} (#{signal.exchange}): #{signal.result} #{signal.result.to_f < 0 ? "\u{2B07}" : "\u{2B06}"}", parse_mode:"markdown"})
         end
       end
     end
