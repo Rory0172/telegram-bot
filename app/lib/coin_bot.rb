@@ -25,7 +25,7 @@ class CoinBot < Bot
       end
     end
 
-    if msg.text.match /\/\p{L}{3}/i
+    if msg.text.match /\/\b\p{L}{3}\b/i
       @coin = Coin.find_by(name: msg.text[1..3].upcase)
       if @coin.blank?
         reply ({chat_id: msg.chat.id, text:"Can't find this specific coin. Make sure that you use the correct abbreviation."})
