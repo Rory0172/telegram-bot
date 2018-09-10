@@ -14,7 +14,7 @@ class CoinSignal < ApplicationRecord
     diff_seconds = Time.now - created_at
     case diff_seconds
       when 0 .. 59
-        "#{diff_seconds} seconds"
+        "#{diff_seconds.round} seconds"
       when 60 .. (3600-1)
         "#{(diff_seconds/60).round} minutes"
       when 3600 .. (3600*24-1)

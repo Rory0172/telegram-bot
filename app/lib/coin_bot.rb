@@ -1,10 +1,12 @@
 class CoinBot < Bot
   def message(msg)
     if msg.text.match /TARGETS/i
-      Coin.all.each do |coin|
-        @signal = coin.coin_signals.last
-        if !@signal.blank?
-          reply({chat_id: msg.chat.id, text:"*#{coin.name}* (#{@signal.exchange}): #{@signal.result} #{@signal.result.to_f < 0 ? "\u{2B07}" : "\u{2B06}"}", parse_mode:"markdown"})
+      if CoinSignal.all.blank?
+        reply({chat_id: msg.chat.id, text:"There are no signals given yet."})
+      else
+        reply({chat_id: msg.chat.id, text:"Click on a signal to get detailed information or use /coinname."})
+        CoinSignal.all.each do |signal|
+          reply({chat_id: msg.chat.id, text:"*/#{signal.coin.name}* (#{signal.exchange}): #{signal.result} #{signal.result.to_f < 0 ? "\u{2B07}" : "\u{2B06}"}", parse_mode:"markdown"})
         end
       end
     end
@@ -12,7 +14,7 @@ class CoinBot < Bot
     if msg.text.match /\b[A-Z]{3}\b/i
       @coin = Coin.find_by(name: msg.text)
       if @coin.blank?
-        reply ({chat_id: msg.chat.id, text:"There are no signals given or this coin is not added yet."})
+        reply ({chat_id: msg.chat.id, text:"There is no signal given for #{msg.text}. Please use /targets to get an overview for active targets."})
       else
         btc = Binance::Api.ticker!(symbol: "BTCUSDT", type: "price")
         if msg.text == "BTC"
