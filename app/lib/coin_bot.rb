@@ -25,15 +25,15 @@ class CoinBot < Bot
       end
     end
 
-    if msg.text.match /\b[A-Z]{3}\b/i
-      @coin = Coin.find_by(name: msg.text)
+    if msg.text.match /\/\b[A-Z]{3}\b/i
+      @coin = Coin.find_by(name: msg.text[1..3])
       if @coin.blank?
-        reply ({chat_id: msg.chat.id, text:"There is no signal given for #{msg.text}. Please use /targets to get an overview for active targets."})
+        reply ({chat_id: msg.chat.id, text:"Can't find this specific coin. Make sure that you use the correct abbreviation."})
       else
-        self.set_price(msg.text)
+        self.set_price(msg.text[1..3])
         @signal = @coin.coin_signals.last
         if @signal.blank?
-          reply ({chat_id: msg.chat.id, text:"No signals given yet!"})
+          reply ({chat_id: msg.chat.id, text:"There is no signal given for #{msg.text[1..3]}. Please use /targets to get an overview for active targets."})
         else
           reply({chat_id: msg.chat.id, text:"*Target #{@coin.name} (#{@signal.exchange})*\n#{@signal.time_ago} ago\nCurrent price: #{@coin.current_price}\nResult: #{@signal.result} #{@signal.result.to_f < 0 ? "\u{2B07}" : "\u{2B06}"}\nEntry: #{@signal.entry_price}\nTarget 1: #{@signal.sell_target_1}\nTarget 2: #{@signal.sell_target_2}\nStoploss: #{@signal.stoploss}", parse_mode:"markdown"})
         end
