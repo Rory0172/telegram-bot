@@ -7,6 +7,7 @@ class CreateCoinSignals < ActiveRecord::Migration[5.2]
       t.float :sell_target_1, null: false
       t.float :sell_target_2
       t.float :stoploss, null: false
+      t.string :note
       t.boolean :target_1_completed, default: false
       t.boolean :target_2_completed, default: false
       t.boolean :stoploss_completed, default: false
