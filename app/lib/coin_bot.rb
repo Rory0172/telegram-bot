@@ -14,6 +14,21 @@ class CoinBot < Bot
     end
   end
 
+  def callback(msg)
+    if msg.data == 'signal'
+      kb = []
+      CoinSignal.all.each do |signal|
+        kb = kb.push(Telegram::Bot::Types::InlineKeyboardButton.new(text: signal.coin.name, callback_data: 'signal'))
+      end
+      markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: kb)
+      reply({chat_id: msg.from.id, text:"signals:", reply_markup: markup})
+    end
+    if msg.data == 'signals'
+      text = msg.data
+      self.message(msg, text)
+    end
+  end
+
   def message(msg, text)
     if text.match /signals/i
       if CoinSignal.all.blank?

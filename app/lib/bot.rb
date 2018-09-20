@@ -11,18 +11,7 @@ class Bot
         case message
        # if @bot.api.get_chat_member(chat_id:, user_id: message.from.id)
         when Telegram::Bot::Types::CallbackQuery
-          if message.data == 'signal'
-            kb = []
-            CoinSignal.all.each do |signal|
-              kb = kb.push(Telegram::Bot::Types::InlineKeyboardButton.new(text: signal.coin.name, callback_data: 'signal'))
-            end
-            markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: kb)
-            reply({chat_id: message.from.id, text:"signals:", reply_markup: markup})
-          end
-          if message.data == 'signals'
-            text = message.data
-            self.message(message, text)
-          end
+          self.callback(message)
         when Telegram::Bot::Types::Message
           text = message.text
           self.message(message, text)
@@ -34,6 +23,9 @@ class Bot
 
   def current_user
     @user
+  end
+
+  def callback(msg)
   end
 
   def message(msg)
