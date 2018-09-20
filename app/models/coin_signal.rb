@@ -2,7 +2,7 @@ class CoinSignal < ApplicationRecord
   belongs_to :coin
 
   def result
-    "#{(coin.current_price / entry_price * 100 - 100).round(1)}%"
+    "#{(coin.current_price / entry_price_low  * 100 - 100).round(1)}%"
   end
 
   after_create :announce

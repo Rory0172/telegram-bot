@@ -18,12 +18,11 @@ class CoinBot < Bot
     if msg.data == 'signal'
       kb = []
       CoinSignal.all.each do |signal|
-        kb = kb.push(Telegram::Bot::Types::InlineKeyboardButton.new(text: signal.coin.name, callback_data: 'signal'))
+        kb = kb.push(Telegram::Bot::Types::InlineKeyboardButton.new(text: "/#{signal.coin.name}", callback_data: "/#{signal.coin.name}"))
       end
       markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: kb)
       reply({chat_id: msg.from.id, text:"signals:", reply_markup: markup})
-    end
-    if msg.data == 'signals'
+    else
       text = msg.data
       self.message(msg, text)
     end
@@ -40,7 +39,7 @@ class CoinBot < Bot
       end
     end
 
-    if text.match /^\/\b[A-Za-z]{3}\b$/i
+    if text.match /\/\b[A-Za-z]{3}\b$/i
       @coin = Coin.find_by(name: text[1..3].upcase)
       if @coin.blank?
         reply ({chat_id: msg.from.id, text:"Can’t find this specific coin. Make sure that you use the correct abbreviation or check /signals for active signals.  "})
@@ -50,10 +49,11 @@ class CoinBot < Bot
         if @signal.blank?
           reply ({chat_id: msg.from.id, text:"There is no signal given for *#{text[1..3].upcase}*. Please use /signals to get an overview for active signals.", parse_mode:"markdown"})
         else
-          reply({chat_id: msg.from.id, text:"*Target #{@coin.name} (#{@signal.exchange})*\n#{@signal.time_ago} ago\nCurrent price: #{@coin.current_price}\nResult: #{@signal.result} #{@signal.result.to_f < 0 ? "\u{2B07}" : "\u{2B06}"}\nEntry: #{@signal.entry_price}\nTarget 1: #{@signal.sell_target_1}\nTarget 2: #{@signal.sell_target_2}\nStoploss: #{@signal.stoploss}#{"\nNote: #{@signal.note}" unless @signal.note.blank?}", parse_mode:"markdown"})
+          reply({chat_id: msg.from.id, text:"*Target #{@coin.name} (#{@signal.exchange})*\n#{@signal.time_ago} ago\nCurrent price: #{@coin.current_price}\nResult: #{@signal.result} #{@signal.result.to_f < 0 ? "\u{2B07}" : "\u{2B06}"}\nEntry: #{@signal.entry_price_low} - #{@signal.entry_price_high}\nTarget 1: #{@signal.sell_target_1_low} - #{@signal.sell_target_1_high}\nTarget 2: #{@signal.sell_target_2_low} - #{@signal.sell_target_2_high}\nStoploss: #{@signal.stoploss}#{"\nNote: #{@signal.note}" unless @signal.note.blank?}", parse_mode:"markdown"})
         end
       end
     end
+
     if text.match /help/i
       kb = [
         Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Get signal for a coin', callback_data: 'signal'),
@@ -68,7 +68,7 @@ class CoinBot < Bot
     self.set_price(signal.coin.name)
     Telegram::Bot::Client.run(@token) do |bot|
       User.all.each do |user|
-        bot.api.send_message(chat_id: user.chat_id, text:"\u{26A1} *NEW SIGNAL* \u{26A1}\n\n*#{@coin.name} (#{signal.exchange})*\nEntry: #{signal.entry_price}\nCurrent price: #{@coin.current_price}\n\nTarget 1: #{signal.sell_target_1}\nTarget 2: #{signal.sell_target_2}\nStoploss: #{signal.stoploss}#{"\n\nNote: #{signal.note}" unless signal.note.blank?}", parse_mode:"markdown")
+        bot.api.send_message(chat_id: user.chat_id, text:"\u{26A1} *NEW SIGNAL* \u{26A1}\n\n*#{@coin.name} (#{signal.exchange})*\nCurrent price: #{@coin.current_price}\nEntry: #{signal.entry_price_low} - #{signal.entry_price_high}\n\nTarget 1: #{signal.sell_target_1_low} - #{signal.sell_target_1_high}\nTarget 2: #{signal.sell_target_2_low} - #{signal.sell_target_2_high}\nStoploss: #{signal.stoploss}#{"\n\nNote: #{signal.note}" unless signal.note.blank?}", parse_mode:"markdown")
       end
     end
   end

@@ -31,6 +31,9 @@ class Bot
   def message(msg)
   end
 
+  def announce(signal)
+  end
+
   def reply(msg)
     @bot.api.send_message msg
   end

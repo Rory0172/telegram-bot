@@ -44,18 +44,18 @@ task binance: :environment do
       Rails.logger = Logger.new(STDOUT)
       Rails.logger.info data
       data.each do |coin|
-        if !signal.target_1_completed and signal.sell_target_1 < coin[2].to_f
+        if !signal.target_1_completed and signal.sell_target_1_low < coin[2].to_f
           Rails.logger.info "signal 1 hit"
           User.all.each do |user|
-            bot.api.send_message(chat_id: user.chat_id, text: "\u{1F3AF} *Update #{signal.coin.name}*\nTarget of *#{signal.sell_target_1}* is hit! That's allready #{(signal.sell_target_1 / signal.entry_price * 100 - 100).round}% profit in #{signal.time_ago}! Next target up is #{signal.sell_target_2}!", parse_mode:"markdown")
+            bot.api.send_message(chat_id: user.chat_id, text: "\u{1F3AF} *Update #{signal.coin.name}*\nTarget of *#{signal.sell_target_1_low}* is hit! That's allready #{(signal.sell_target_1_low / signal.entry_price_low * 100 - 100).round}% profit in #{signal.time_ago}! Next target up is #{signal.sell_target_2_low}!", parse_mode:"markdown")
           end
           signal.target_1_completed = true
           signal.save
         end
-        if !signal.target_2_completed and signal.sell_target_2 < coin[2].to_f
+        if !signal.target_2_completed and signal.sell_target_2_low < coin[2].to_f
           Rails.logger.info "signal 2 hit"
           User.all.each do |user|
-            bot.api.send_message(chat_id: user.chat_id, text: "\u{1F3AF} *Update #{signal.coin.name}*\nTarget of *#{signal.sell_target_2}* is hit! That's another #{(signal.sell_target_1 / signal.entry_price * 100 - 100).round}% profit in #{signal.time_ago}!", parse_mode:"markdown")
+            bot.api.send_message(chat_id: user.chat_id, text: "\u{1F3AF} *Update #{signal.coin.name}*\nTarget of *#{signal.sell_target_2_low}* is hit! That's another #{(signal.sell_target_1_low / signal.entry_price_low * 100 - 100).round}% profit in #{signal.time_ago}!", parse_mode:"markdown")
           end
           signal.target_2_completed = true
           signal.save

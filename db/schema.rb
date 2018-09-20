@@ -35,9 +35,12 @@ ActiveRecord::Schema.define(version: 2018_09_07_211445) do
   create_table "coin_signals", force: :cascade do |t|
     t.bigint "coin_id", null: false
     t.string "exchange", default: "Binance"
-    t.float "entry_price", null: false
-    t.float "sell_target_1", null: false
-    t.float "sell_target_2"
+    t.float "entry_price_low", null: false
+    t.float "entry_price_high", null: false
+    t.float "sell_target_1_low", null: false
+    t.float "sell_target_1_high", null: false
+    t.float "sell_target_2_low"
+    t.float "sell_target_2_high"
     t.float "stoploss", null: false
     t.string "note"
     t.boolean "target_1_completed", default: false
