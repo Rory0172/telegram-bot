@@ -11,14 +11,21 @@ class Bot
         case message
        # if @bot.api.get_chat_member(chat_id:, user_id: message.from.id)
         when Telegram::Bot::Types::CallbackQuery
-          if message.data == 'signals'
-            self.message(message)
-          end
           if message.data == 'signal'
-            reply(chat_id: message.from.id, text: "text")
+            kb = []
+            CoinSignal.all.each do |signal|
+              kb = kb.push(Telegram::Bot::Types::InlineKeyboardButton.new(text: signal.coin.name, callback_data: 'signal'))
+            end
+            markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: kb)
+            reply({chat_id: message.from.id, text:"signals:", reply_markup: markup})
+          end
+          if message.data == 'signals'
+            text = message.data
+            self.message(message, text)
           end
         when Telegram::Bot::Types::Message
-          self.message(message)
+          text = message.text
+          self.message(message, text)
         end
         #@user = User.find_or_create_by(telegram_id: message.from.id, username: message.from.username, chat_id:message.chat.id)
       end
