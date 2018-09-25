@@ -13,6 +13,8 @@ class Bot
         when Telegram::Bot::Types::CallbackQuery
           self.callback(message)
         when Telegram::Bot::Types::Message
+          Rails.logger = Logger.new(STDOUT)
+          Rails.logger.info message.text
           text = message.text
           self.message(message, text)
         end
