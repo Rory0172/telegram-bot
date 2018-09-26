@@ -7,18 +7,18 @@ class Bot
     Telegram::Bot::Client.run(@token) do |bot|
       @bot = bot
       @bot.listen do |message|
-        @user = User.find_or_create_by(telegram_id: message.from.id, username: message.from.username, chat_id:message.from.id)
-        case message
-       # if @bot.api.get_chat_member(chat_id:, user_id: message.from.id)
-        when Telegram::Bot::Types::CallbackQuery
-          self.callback(message)
-        when Telegram::Bot::Types::Message
-          Rails.logger = Logger.new(STDOUT)
-          Rails.logger.info message.text
-          text = message.text
-          self.message(message, text)
+        Rails.logger.info message
+        chat_member = @bot.api.get_chat_member(chat_id:"-233641844", user_id: message.from.id)
+        if chat_member["result"]["status"] != "left" and chat_member["result"]["status"] != "kicked"
+          case message
+          when Telegram::Bot::Types::CallbackQuery
+            self.callback(message)
+          when Telegram::Bot::Types::Message
+            @user = User.find_or_create_by(telegram_id: message.from.id, username: message.from.username, chat_id:message.from.id)
+            text = message.text
+            self.message(message, text)
+          end
         end
-        #@user = User.find_or_create_by(telegram_id: message.from.id, username: message.from.username, chat_id:message.chat.id)
       end
     end
   end

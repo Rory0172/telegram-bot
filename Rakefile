@@ -7,7 +7,7 @@ Rails.application.load_tasks
 
 task bot: :environment do
   require 'telegram/bot'
-
+  Rails.logger = Logger.new(STDOUT)
   bot   = CoinBot.new(ENV["BOTTOKEN"])
   bot.start_listening
 end
