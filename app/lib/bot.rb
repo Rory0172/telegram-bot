@@ -9,6 +9,9 @@ class Bot
       @bot.listen do |message|
         Rails.logger.info message
         chat_member = @bot.api.get_chat_member(chat_id:"-233641844", user_id: message.from.id)
+        chat = @bot.api.get_chat(chat_id:"-233641844")
+        Rails.logger.info chat["result"]["title"]
+        chat_title = chat["result"]["title"]
         if chat_member["result"]["status"] != "left" and chat_member["result"]["status"] != "kicked"
           case message
           when Telegram::Bot::Types::CallbackQuery
@@ -18,6 +21,8 @@ class Bot
             text = message.text
             self.message(message, text)
           end
+        else
+          reply ({chat_id: message.from.id, text:"You are not a member of the premium group *#{chat_title}*. If you would like to access this bot, please contact @admin.", parse_mode:"markdown"})
         end
       end
     end
