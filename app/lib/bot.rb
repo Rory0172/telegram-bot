@@ -10,7 +10,7 @@ class Bot
         Rails.logger.info message
         chat_member = @bot.api.get_chat_member(chat_id:ENV["CHATID"], user_id: message.from.id)
         chat = @bot.api.get_chat(chat_id:ENV["CHATID"])
-        Rails.logger.info chat["result"]["title"]
+        puts chat_member
         chat_title = chat["result"]["title"]
         if chat_member["result"]["status"] != "left" and chat_member["result"]["status"] != "kicked"
           case message
