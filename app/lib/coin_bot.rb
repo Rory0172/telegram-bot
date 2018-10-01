@@ -8,7 +8,7 @@ class CoinBot < Bot
       @coin.save
     else
       binance_data_coin = Binance::Api.ticker!(symbol: "#{coin_name}BTC", type: "price")
-      @coin.current_price = '%.6g' % binance_data_coin[:price].to_f
+      @coin.current_price = binance_data_coin[:price]
       @coin.save
     end
   end
