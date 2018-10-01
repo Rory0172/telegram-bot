@@ -47,7 +47,11 @@ class Bot
   end
 
   def reply(msg)
-    @bot.api.send_message msg
+    begin
+      @bot.api.send_message msg
+    rescue Exception => e
+      Rails.logger.info e
+    end
   end
 end
 
