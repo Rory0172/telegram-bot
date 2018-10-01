@@ -69,7 +69,7 @@ class CoinBot < Bot
     self.set_price(signal.coin.name)
     Telegram::Bot::Client.run(@token) do |bot|
       User.all.each do |user|
-        reply{(chat_id: user.chat_id, text:"\u{26A1} *NEW SIGNAL* \u{26A1}\n\n*#{@coin.name} (#{signal.exchange})*\nCurrent price: #{@coin.current_price}\nEntry: #{signal.entry_price_low} - #{signal.entry_price_high}\n\nTarget 1: #{signal.sell_target_1_low} - #{signal.sell_target_1_high}\nTarget 2: #{signal.sell_target_2_low} - #{signal.sell_target_2_high}\nStoploss: #{signal.stoploss}#{"\n\nNote: #{signal.note}" unless signal.note.blank?}", parse_mode:"markdown")}
+        reply({chat_id: user.chat_id, text:"\u{26A1} *NEW SIGNAL* \u{26A1}\n\n*#{@coin.name} (#{signal.exchange})*\nCurrent price: #{@coin.current_price}\nEntry: #{signal.entry_price_low} - #{signal.entry_price_high}\n\nTarget 1: #{signal.sell_target_1_low} - #{signal.sell_target_1_high}\nTarget 2: #{signal.sell_target_2_low} - #{signal.sell_target_2_high}\nStoploss: #{signal.stoploss}#{"\n\nNote: #{signal.note}" unless signal.note.blank?}", parse_mode:"markdown"})
       end
     end
   end
