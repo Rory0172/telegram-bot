@@ -2,14 +2,13 @@ class CoinBot < Bot
 
   def set_price(coin_name)
     @coin = Coin.find_by(name: coin_name)
-    btc = Binance::Api.ticker!(symbol: "BTCUSDT", type: "price")
     if coin_name == "BTC"
+      btc = Binance::Api.ticker!(symbol: "BTCUSDT", type: "price")
       @coin.current_price = btc[:price]
       @coin.save
     else
       binance_data_coin = Binance::Api.ticker!(symbol: "#{coin_name}BTC", type: "price")
-      price_btc = btc[:price].to_f
-      @coin.current_price = '%.6g' % (binance_data_coin[:price].to_f * price_btc)
+      @coin.current_price = '%.6g' % binance_data_coin[:price].to_f
       @coin.save
     end
   end
