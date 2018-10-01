@@ -3,8 +3,7 @@ class CreateCoins < ActiveRecord::Migration[5.2]
     create_table :coins do |t|
       t.string :name
       t.string :symbol
-      t.float :current_price
-
+      t.decimal :current_price
       t.timestamps
     end
   end
