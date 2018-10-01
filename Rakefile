@@ -12,14 +12,6 @@ task bot: :environment do
   bot.start_listening
 end
 
-task send: :environment do
-  require 'telegram/bot'
-  Telegram::Bot::Client.run(ENV["BOTTOKEN"]) do |bot|
-    bot.api.send_message(chat_id: "546865437", text: "MNever \u{1F601}")
-  end
-end
-
-
 task coins: :environment do
   data = Binance::Api.ticker!(type: "price")
   data.each do |coin|

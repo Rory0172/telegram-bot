@@ -8,8 +8,8 @@ class Bot
       @bot = bot
       @bot.listen do |message|
         Rails.logger.info message
-        chat_member = @bot.api.get_chat_member(chat_id:"-233641844", user_id: message.from.id)
-        chat = @bot.api.get_chat(chat_id:"-233641844")
+        chat_member = @bot.api.get_chat_member(chat_id:ENV["CHATID"], user_id: message.from.id)
+        chat = @bot.api.get_chat(chat_id:ENV["CHATID"])
         Rails.logger.info chat["result"]["title"]
         chat_title = chat["result"]["title"]
         if chat_member["result"]["status"] != "left" and chat_member["result"]["status"] != "kicked"
