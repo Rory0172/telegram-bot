@@ -73,6 +73,7 @@ class CoinBot < Bot
           bot.api.send_message(chat_id: user.chat_id, text:"\u{26A1} *NEW SIGNAL* \u{26A1}\n\n*#{@coin.name} (#{signal.exchange})*\nCurrent price: #{@coin.current_price}\nEntry: #{signal.entry_price_low} - #{signal.entry_price_high}\n\nTarget 1: #{signal.sell_target_1_low} - #{signal.sell_target_1_high}\nTarget 2: #{signal.sell_target_2_low} - #{signal.sell_target_2_high}\nStoploss: #{signal.stoploss}#{"\n\nNote: #{signal.note}" unless signal.note.blank?}", parse_mode:"markdown")
         rescue Exception => e
           Rails.logger.info e
+        end
       end
     end
   end
