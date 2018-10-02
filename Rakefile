@@ -36,7 +36,7 @@ task binance: :environment do
       Rails.logger = Logger.new(STDOUT)
       Rails.logger.info data
       data.each do |coin|
-        if !signal.target_1_completed and signal.sell_target_1_low < coin[2].to_f
+        if !signal.target_1_completed and signal.sell_target_1_low < coin[2]
           Rails.logger.info "signal 1 hit"
           User.all.each do |user|
             begin
@@ -48,7 +48,7 @@ task binance: :environment do
           signal.target_1_completed = true
           signal.save
         end
-        if !signal.target_2_completed and signal.sell_target_2_low < coin[2].to_f
+        if !signal.target_2_completed and signal.sell_target_2_low < coin[2]
           Rails.logger.info "signal 2 hit"
           User.all.each do |user|
             begin
@@ -60,7 +60,7 @@ task binance: :environment do
           signal.target_2_completed = true
           signal.save
         end
-        if !signal.stoploss_completed and signal.stoploss > coin[3].to_f
+        if !signal.stoploss_completed and signal.stoploss > coin[3]
           Rails.logger.info "stoploss hit"
           User.all.each do |user|
             begin
