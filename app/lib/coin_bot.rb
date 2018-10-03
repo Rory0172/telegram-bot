@@ -46,6 +46,7 @@ class CoinBot < Bot
         markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: kb)
         reply({chat_id: msg.chat.id, text: 'This bot will help you organize crypto signals and alert you when targets are hit. How can I help you?', reply_markup: markup})
       else
+        text = text.delete "/"
         @coin = Coin.find_by(name: text.upcase)
         if @coin.blank?
           reply ({chat_id: msg.from.id, text:"Can’t find this specific coin. Make sure that you use the correct abbreviation or check /signals for active signals.  "})
