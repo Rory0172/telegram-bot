@@ -29,6 +29,7 @@ class CoinBot < Bot
 
   def message(msg, text)
     if text != nil
+      text = text.downcase
       case text
       when /signals/
         if CoinSignal.all.blank?
