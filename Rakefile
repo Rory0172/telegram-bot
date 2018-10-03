@@ -15,14 +15,15 @@ end
 task coins: :environment do
   data = Binance::Api.ticker!(type: "price")
   data.each do |coin|
-    Rails.logger = Logger.new(STDOUT)
-    Rails.logger.info coin
-    price = 0
-    name = coin[:symbol][0..2]
-    db_coin = Coin.find_or_create_by!(name: name)
-    db_coin[:symbol] = coin[:symbol]
-    db_coin[:current_price] = price
-    db_coin.save
+    if coin[:symbol].last(3) == "BTC"
+      price = 0
+      name = coin[:symbol].chomp('BTC')
+      puts name
+      db_coin = Coin.find_or_create_by!(name: name)
+      db_coin[:symbol] = coin[:symbol]
+      db_coin[:current_price] = price
+      db_coin.save
+    end
   end
 end
 
