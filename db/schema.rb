@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 2018_09_07_211445) do
   create_table "coin_signals", force: :cascade do |t|
     t.bigint "coin_id", null: false
     t.string "exchange", default: "Binance"
+    t.integer "duration", default: 0
     t.decimal "entry_price_low", null: false
     t.decimal "entry_price_high", null: false
     t.decimal "sell_target_1_low", null: false

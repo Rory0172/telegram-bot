@@ -1,5 +1,6 @@
 class CoinSignal < ApplicationRecord
   belongs_to :coin
+  enum duration: { "short (1-2 weeks)": 0, "mid (1-3 months)": 1, "long (6+ months)": 2 }
 
   def result
     "#{(coin.current_price / entry_price_low  * 100 - 100).round(1)}%"
