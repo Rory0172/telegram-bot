@@ -19,10 +19,10 @@ class CoinBot < Bot
         reply({chat_id: msg.from.id, text:"There are no signals given yet."})
       else
         CoinSignal.all.each do |signal|
-          kb << Telegram::Bot::Types::InlineKeyboardButton.new(text: "/#{signal.coin.name}", callback_data: "/#{signal.coin.name}"))
+          kb << Telegram::Bot::Types::InlineKeyboardButton.new(text: "/#{signal.coin.name}", callback_data: "/#{signal.coin.name}")
         end
-        markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: kb)
-        reply({chat_id: msg.from.id, text:"Active signals:", reply_markup: markup})
+      markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: kb)
+      reply({chat_id: msg.from.id, text:"Active signals:", reply_markup: markup})
       end
     else
       text = msg.data
