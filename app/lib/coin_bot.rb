@@ -1,5 +1,4 @@
 class CoinBot < Bot
-
   def set_price(coin_name)
     @coin = Coin.find_by(name: coin_name)
     if coin_name == "BTC"
@@ -16,11 +15,15 @@ class CoinBot < Bot
   def callback(msg)
     if msg.data == 'signal'
       kb = []
-      CoinSignal.all.each do |signal|
-        kb = kb.push(Telegram::Bot::Types::InlineKeyboardButton.new(text: "/#{signal.coin.name}", callback_data: "/#{signal.coin.name}"))
+      if CoinSignal.all.blank?
+        reply({chat_id: msg.from.id, text:"There are no signals given yet."})
+      else
+        CoinSignal.all.each do |signal|
+          kb << Telegram::Bot::Types::InlineKeyboardButton.new(text: "/#{signal.coin.name}", callback_data: "/#{signal.coin.name}"))
+        end
+        markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: kb)
+        reply({chat_id: msg.from.id, text:"Active signals:", reply_markup: markup})
       end
-      markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: kb)
-      reply({chat_id: msg.from.id, text:"signals:", reply_markup: markup})
     else
       text = msg.data
       self.message(msg, text)
@@ -35,7 +38,7 @@ class CoinBot < Bot
         if CoinSignal.all.blank?
           reply({chat_id: msg.from.id, text:"There are no signals given yet."})
         else
-          message = "Click on a signal to get detailed information or use */coinname*.\n\n*Active signals:*\n"
+          message = "Click on a signal or use */coinname* to get detailed information.\n\n*Active signals:*\n"
           CoinSignal.all.each{|signal| message << "/#{signal.coin.name} (#{signal.exchange}): #{signal.result} #{signal.result.to_f < 0 ? "\u{2B07}" : "\u{2B06}"}\n"}
           reply({chat_id: msg.from.id, text: message, parse_mode:"markdown"})
         end
@@ -50,12 +53,12 @@ class CoinBot < Bot
         text = text.delete "/"
         @coin = Coin.find_by(name: text.upcase)
         if @coin.blank?
-          reply ({chat_id: msg.from.id, text:"Can’t find this specific coin. Make sure that you use the correct abbreviation or check /signals for active signals.  "})
+          reply({chat_id: msg.from.id, text:"Can’t find this specific coin. Make sure that you use the correct abbreviation or check /signals for active signals.  "})
         else
           self.set_price(text.upcase)
           @signal = @coin.coin_signals.last
           if @signal.blank?
-            reply ({chat_id: msg.from.id, text:"There is no signal given for *#{text.upcase}*. Please use /signals to get an overview for active signals.", parse_mode:"markdown"})
+            reply({chat_id: msg.from.id, text:"There is no signal given for *#{text.upcase}*. Please use /signals to get an overview for active signals.", parse_mode:"markdown"})
           else
             reply({chat_id: msg.from.id, text:"*Target #{@coin.name} (#{@signal.exchange})*\nDuration: #{@signal.duration}\n#{@signal.time_ago} ago\nCurrent price: #{@coin.current_price}\nResult: #{@signal.result} #{@signal.result.to_f < 0 ? "\u{2B07}" : "\u{2B06}"}\nEntry: #{@signal.entry_price_low} - #{@signal.entry_price_high}\nTarget 1: #{@signal.sell_target_1_low} - #{@signal.sell_target_1_high}\nTarget 2: #{@signal.sell_target_2_low} - #{@signal.sell_target_2_high}\nStoploss: #{@signal.stoploss}#{"\nNote: #{@signal.note}" unless @signal.note.blank?}", parse_mode:"markdown"})
           end
